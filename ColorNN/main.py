@@ -32,7 +32,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.01)
 
 # Trening
-epochs = 1000
+epochs = 10000
 for epoch in range(epochs):
     optimizer.zero_grad()
     outputs = model(X)
@@ -42,6 +42,13 @@ for epoch in range(epochs):
 
     if epoch % 100 == 0:
         print(f'Epoch [{epoch}/{epochs}], Loss: {loss.item():.4f}')
+        
+# Końcowa dokładność
+with torch.no_grad():
+    final_outputs = model(X)
+    final_predictions = torch.argmax(final_outputs, dim=1)
+    final_accuracy = (final_predictions == Y).float().mean().item()
+    print(f'Final Accuracy: {final_accuracy:.4f}')
 
 # Rysowanie granicy dezycyjnej
 plot_decision_boundary(lambda x: model(x), X, Y, colors=('red', 'blue'))
