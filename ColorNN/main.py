@@ -26,6 +26,11 @@ df = pd.read_csv("flower_points.csv")  # Wczytujemy wcześniej zapisane punkty
 X = torch.tensor(df[['X', 'Y']].values, dtype=torch.float32)  # Współrzędne
 Y = torch.tensor([0 if c == 'blue' else 1 for c in df['Color']], dtype=torch.long)  # 0 = blue, 1 = red
 
+plt.scatter(df['X'], df['Y'], c=df['Color'].tolist())  # Konwersja na listę
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.show()
+
 # Tworzymy model, funkcję straty i optymalizator
 model = ColorNN()
 criterion = nn.CrossEntropyLoss()
