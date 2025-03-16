@@ -22,7 +22,7 @@ class ColorNN(nn.Module):
         return x  # Nie używamy softmax, bo CrossEntropyLoss go używa
 
 # Wczytanie danych
-df = pd.read_csv("./ColorNN/flower_points.csv") # Wczytujemy wcześniej zapisane punkty
+df = pd.read_csv("flower_points.csv")  # Wczytujemy wcześniej zapisane punkty (Open in Git Bash)
 X = torch.tensor(df[['X', 'Y']].values, dtype=torch.float32)  # Współrzędne
 Y = torch.tensor([0 if c == 'blue' else 1 for c in df['Color']], dtype=torch.long)  # 0 = blue, 1 = red
 
