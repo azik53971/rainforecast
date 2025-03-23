@@ -17,7 +17,7 @@ from tensorflow.python.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.python.keras.metrics import AUC
 warnings.filterwarnings('ignore')
 
-test = pd.read_csv('test.csv')
+test = pd.read_csv('uploads\weather_data.csv')
 train = pd.read_csv('train.csv')
 
 train.fillna(train.mean(), inplace=True)
@@ -39,7 +39,7 @@ test['wi'] = (0.4 * test['humidity']) + (0.3 * test['cloud']) - (0.3 * test['sun
 
 X = train.drop(columns=['id', 'rainfall'])
 y = train['rainfall']
-X_test = test.drop(columns=['id'])
+X_test = test   #.drop(columns=['id'])
 
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
@@ -60,7 +60,7 @@ model = Sequential([
     Dense(64, activation='relu'),
     Dropout(0.3),
     Dense(32, activation='relu'),
-    Dense(1, activation='tanh') 
+    Dense(1, activation='sigmoid') 
 ])
 
 from tensorflow.python.keras.optimizer_v1 import SGD
@@ -80,10 +80,4 @@ history = model.fit(
     verbose=1
 )
 
-test_preds = model.predict(X_test_scaled).flatten()
-
-if np.isnan(test_preds).sum() > 0:
-    print(f"Found {np.isnan(test_preds).sum()} NaN values in predictions. Fixing them...")
-    test_preds = np.nan_to_num(test_preds) 
-submission = pd.DataFrame({"id": test['id'], "rainfall": test_preds})
-submission.to_csv("submission.csv", index=False)
+print(model.predict(X_test_scaled))
